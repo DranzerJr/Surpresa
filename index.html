@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>60 Dias de Cor 🌻</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amarelo-creme: #fffef2;
+            --amarelo-girassol: #FFEB3B;
+            --marrom-poesia: #4E342E;
+            --detalhe-amor: #d35400;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--amarelo-creme);
+            font-family: 'Dancing Script', cursive;
+            color: var(--marrom-poesia);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        #petals-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 20px 10px 20px;
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.2rem;
+            margin: 0;
+            color: var(--detalhe-amor);
+            font-weight: normal;
+        }
+
+        .texto-romantico {
+            padding: 0 35px;
+            text-align: center;
+            max-width: 450px;
+        }
+
+        .texto-romantico p {
+            font-size: 1.4rem;
+            line-height: 1.5;
+            margin: 15px 0;
+        }
+
+        /* Pilha de Fotos */
+        .stack-container {
+            position: relative;
+            width: 280px;
+            height: 360px;
+            margin-top: 20px;
+        }
+
+        .photo {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: 12px solid #fff;
+            border-bottom: 50px solid #fff; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .dica {
+            margin-top: 60px;
+            font-size: 1.1rem;
+            color: var(--marrom-poesia);
+            opacity: 0.6;
+        }
+
+        footer {
+            margin: 50px 0 30px 0;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .frase-final {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
+            color: var(--detalhe-amor);
+            display: block;
+        }
+
+        /* Pétala de Girassol */
+        .petal {
+            position: absolute;
+            background-color: var(--amarelo-girassol);
+            border-radius: 100% 0 100% 0;
+            opacity: 0.7;
+            filter: blur(0.5px);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="petals-container"></div>
+
+    <header>
+        <h1>60 dias de nós...</h1>
+    </header>
+
+    <div class="texto-romantico">
+        <p>Para alguns, dois meses são apenas 60 dias. Para mim, foram capítulos inteiros de uma felicidade que eu ainda estou aprendendo a medir.</p>
+        <p>Nesse tempo, você transformou minha rotina em poesia e o meu sorriso em morada. Obrigado por ser meu girassol, sempre buscando a luz e trazendo calor para os meus dias.</p>
+    </div>
+
+    <div class="stack-container" id="photoStack">
+        <img src="https://lh3.googleusercontent.com/d/14KfQycqOyjq_S0Du_rwjgnYisooTT1MP" class="photo">
+        <img src="https://lh3.googleusercontent.com/d/1wxni0vkMDKRvTiotlEKwKqDJXJEo_8am" class="photo">
+        <img src="https://lh3.googleusercontent.com/d/1DgHAsla39SXjg7Ut3YIpCjVAEY6ha4yI" class="photo">
+        <img src="https://lh3.googleusercontent.com/d/1uxky72l891_TwqijVzAUiDFxrroGaBpM" class="photo">
+        <img src="https://lh3.googleusercontent.com/d/1qvQzbmAIeq_pUN60ZeliojFaHe1BhRVm" class="photo">
+        <img src="https://lh3.googleusercontent.com/d/11I-bjdvbyXzEP_BSAA20XJMH9l0P9JqP" class="photo">
+        <img src="https://lh3.googleusercontent.com/d/1G7dTYoIUR3yh4JNV85Eerb4A64xklggX" class="photo">
+        <img src="https://lh3.googleusercontent.com/d/1ws5B124PiQJTV2BZ4qIYFFhedhDpNvcj" class="photo">
+        <img src="https://lh3.googleusercontent.com/d/15DLw_KZJsj4JVQN1OrCRFN_ObrDv5DjR" class="photo">
+        <img src="https://lh3.googleusercontent.com/d/1Ow0n9IWWHzoXZfqSH0_jLOXqp0HWwyUQ" class="photo">
+        <img src="https://lh3.googleusercontent.com/d/1exb-PX5XnYH1cP4gm9thIqJi3suky08U" class="photo">
+        <img src="https://lh3.googleusercontent.com/d/12ybHpLe2NoqxhTsksCEJqXkBMJS111wl" class="photo">
+    </div>
+
+    <p class="dica">Toque nas fotos para reviver nossos momentos 👆</p>
+
+    <footer>
+        <span class="frase-final">Você é o meu lugar favorito no mundo.</span>
+    </footer>
+
+    <script>
+        // Lógica do carrossel (pilha bagunçada)
+        const photos = document.querySelectorAll('.photo');
+        let zIndexTop = photos.length;
+
+        photos.forEach((photo, i) => {
+            const rot = (Math.random() * 14) - 7;
+            const tx = (Math.random() * 16) - 8;
+            const ty = (Math.random() * 16) - 8;
+            photo.style.transform = `rotate(${rot}deg) translate(${tx}px, ${ty}px)`;
+            photo.style.zIndex = photos.length - i;
+
+            photo.onclick = function() {
+                // Animação de saída suave e lenta
+                this.style.transform = `translateY(-160vh) rotate(35deg) scale(0.4)`;
+                this.style.opacity = '0';
+
+                setTimeout(() => {
+                    zIndexTop--;
+                    this.style.zIndex = zIndexTop - photos.length;
+                    const newRot = (Math.random() * 14) - 7;
+                    this.style.transform = `rotate(${newRot}deg) translate(0,0)`;
+                    this.style.opacity = '1';
+                }, 1200);
+            };
+        });
+
+        // Efeito das pétalas de girassol (aprimorado)
+        const container = document.getElementById('petals-container');
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            const size = Math.random() * 12 + 10;
+            petal.style.width = size + 'px';
+            petal.style.height = (size * 1.6) + 'px';
+            petal.style.left = Math.random() * 100 + 'vw';
+            const duration = Math.random() * 7 + 7; // Bem devagar
+            
+            petal.animate([
+                { top: '-20px', transform: 'rotate(0deg) translateX(0)' },
+                { top: '110vh', transform: `rotate(${Math.random() * 540}deg) translateX(${Math.random() * 120 - 60}px)` }
+            ], {
+                duration: duration * 1000,
+                easing: 'linear'
+            });
+
+            container.appendChild(petal);
+            setTimeout(() => petal.remove(), duration * 1000);
+        }
+        setInterval(createPetal, 500);
+    </script>
+</body>
+</html>
