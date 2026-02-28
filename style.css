@@ -1,77 +1,233 @@
-/* Configurações Gerais */
+:root {
+    --amarelo-creme: #fffef2;
+    --amarelo-girassol: #FFEB3B;
+    --marrom-poesia: #4E342E;
+    --detalhe-amor: #d35400;
+    --cor-envelope: #f1c40f;
+    --cor-aba: #f39c12;
+}
+
 body {
-    font-family: 'Georgia', serif; /* Uma fonte com um toque romântico */
-    background-color: #fdfae6; /* Amarelo bem clarinho e suave */
-    color: #5d4037; /* Marrom escuro para o texto, para contraste */
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    /* Degradê linear de cima para baixo bem sutil */
+    /* De um Branco Perolado (#fffef9) para um Creme Suave (#fff9e6) */
+    background: linear-gradient(180deg, #fffef9 0%, #fdfae8 40%, #f8edc9 100%);
+    background-attachment: fixed; 
+    
+    font-family: 'Dancing Script', cursive;
+    color: var(--marrom-poesia);
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-x: hidden;
     min-height: 100vh;
 }
 
-header {
-    background-color: #fff9c4; /* Um amarelo mais quente para o cabeçalho */
-    width: 100%;
-    padding: 20px 0;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-h1 {
-    margin: 0;
-    font-size: 1.8em;
-    color: #fbc02d; /* Amarelo dourado para o título */
-}
-
-/* Seção de Texto */
-.romance-text {
-    padding: 30px 20px;
-    max-width: 600px;
-    text-align: center;
-}
-
-.romance-text p {
-    font-size: 1.1em;
-    line-height: 1.6;
-    margin-bottom: 15px;
-}
-
-/* Container da Pilha de Fotos */
-.photo-pile-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    overflow: hidden; /* Esconde as fotos que saem da tela */
-    padding: 40px 0;
-}
-
-.photo-pile {
-    position: relative;
-    width: 300px; /* Largura da pilha */
-    height: 400px; /* Altura da pilha */
-}
-
-.photo-pile img {
-    position: absolute;
+/* --- Envelope --- */
+#overlay-envelope {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Faz a imagem preencher o espaço */
-    border: 10px solid white; /* Moldura branca */
-    box-shadow: 3px 3px 10px rgba(0,0,0,0.2); /* Sombra para dar profundidade */
-    border-radius: 5px;
-    transition: transform 0.5s ease, opacity 0.5s ease; /* Transições suaves */
-    cursor: pointer;
+    /* Tom de amarelo bem pálido e delicado */
+    background-color: #fdf6da; 
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease, visibility 0.8s;
 }
 
-/* Efeito de Pilha Bagunçada (usando transformações) */
-.photo-pile img:nth-child(1) { transform: rotate(-5deg) translate(-10px, -5px); z-index: 5; }
-.photo-pile img:nth-child(2) { transform: rotate(3deg) translate(5px, 10px); z-index: 4; }
-.photo-pile img:nth-child(3) { transform: rotate(-8deg) translate(15px, -15px); z-index: 3; }
-.photo-pile img:nth-child(4) { transform: rotate(6deg) translate(-20px, 20px); z-index: 2; }
-.photo-pile img:nth-child(5) { transform: rotate(-3deg) translate(10px, 15px); z-index: 1; }
-/* Adicione regras similares para mais fotos se necessário, alterando a rotação e z-index */
+.envelope-wrapper {
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.4s ease;
+}
+
+.envelope {
+    position: relative;
+    width: 280px;
+    height: 180px;
+    background: var(--cor-envelope);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.envelope::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    border-top: 100px solid var(--cor-aba);
+    border-left: 140px solid transparent;
+    border-right: 140px solid transparent;
+    transform-origin: top;
+    transition: transform 0.6s ease, z-index 0.1s 0.3s;
+}
+
+.envelope.aberto::before {
+    transform: rotateX(180deg);
+    z-index: 0;
+}
+
+#instrucao {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    transition: 0.5s;
+}
+
+.coracao {
+    position: absolute;
+    top: 75px;
+    left: 120px;
+    width: 40px;
+    height: 40px;
+    background: #e74c3c;
+    z-index: 5;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    
+    /* Faz o coração seguir o movimento da aba */
+    transition: transform 0.6s ease, opacity 0.4s ease;
+    transform-origin: center top; 
+}
+
+.envelope.aberto .coracao {
+    transform: translateY(-100px) rotateX(180deg) scale(0.5);
+    opacity: 0;
+}
+
+/* --- Conteúdo Principal --- */
+#main-content {
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 1.5s ease;
+    width: 100%;
+}
+
+header h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.2rem;
+    margin: 0;
+    color: var(--detalhe-amor);
+    padding: 50px 20px 10px;
+}
+
+.texto-romantico {
+    padding: 0 35px;
+    text-align: center;
+    max-width: 450px;
+}
+
+.texto-romantico p {
+    font-size: 1.4rem;
+    line-height: 1.5;
+}
+
+/* --- Stack de Fotos --- */
+.stack-container {
+    position: relative;
+    width: 280px;
+    height: 360px;
+    margin-top: 20px;
+}
+
+.photo {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 12px solid #fff;
+    border-bottom: 50px solid #fff;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    /* 1.5s é o tempo da animação. O cubic-bezier deixa o final bem suave */
+    transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1); 
+    cursor: pointer;
+    border-radius: 2px;
+    backface-visibility: hidden;
+}
+
+.photo:hover {
+    box-shadow: 0 15px 45px rgba(0,0,0,0.2);
+    transform: scale(1.05) !important; /* Dá um leve zoom ao passar o mouse */
+}
+
+.dica {
+    margin-top: 110px;
+    font-size: 1.1rem;
+    opacity: 0.6;
+}
+
+footer {
+    margin: 50px 0 30px;
+}
+
+.frase-final {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.2rem;
+    color: var(--detalhe-amor);
+}
+
+/* Pétalas */
+#petals-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.petal {
+    position: absolute;
+    background-color: var(--amarelo-girassol);
+    border-radius: 100% 0 100% 0;
+    opacity: 0.7;
+}
+
+.rodape-final {
+    margin-top: 120px; /* Mais espaço para o final */
+    margin-bottom: 80px;
+    text-align: center;
+    width: 100%;
+}
+
+.rodape-final p {
+    font-family: 'Great Vibes', cursive; /* Fonte mais artística e imponente */
+    font-size: 3rem; /* BEM MAIOR, como você pediu */
+    color: #4e342e; /* Marrom café profundo, mais visível */
+    letter-spacing: 2px;
+    display: inline-block; /* Necessário para o efeito */
+    position: relative;
+}
+
+/* O "Cursor" da Caneta (opcional, dá um charme) */
+.rodape-final p::after {
+    content: "|";
+    position: absolute;
+    right: -15px;
+    color: #b35b00; /* Cor do girassol */
+    animation: piscaCursor 0.8s infinite;
+    opacity: 1;
+}
+
+/* Esconde o cursor quando a escrita termina (controlado pelo JS) */
+.rodape-final.escrita-concluida p::after {
+    display: none;
+}
+
+@keyframes piscaCursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
