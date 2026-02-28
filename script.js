@@ -1,90 +1,86 @@
 function abrirCarta() {
-            const envelope = document.getElementById('envelope-body');
-            const overlay = document.getElementById('overlay-envelope');
-            const content = document.getElementById('main-content');
-            const instrucao = document.getElementById('instrucao');
+    const envelope = document.getElementById('envelope-body');
+    const overlay = document.getElementById('overlay-envelope');
+    const content = document.getElementById('main-content');
+    const instrucao = document.getElementById('instrucao');
 
-            // 1. Inicia animação de abertura
-            envelope.classList.add('aberto');
-            instrucao.style.opacity = '0';
+    envelope.classList.add('aberto');
+    if (instrucao) instrucao.style.opacity = '0';
+    
+    setTimeout(() => {
+        overlay.style.opacity = '0';
+        setTimeout(() => {
+            overlay.style.display = 'none';
             
-            // 2. Após a aba abrir, faz o overlay sumir
+            // Força a exibição e centralização dos itens
+            content.style.display = 'flex';
+            
             setTimeout(() => {
-                overlay.style.opacity = '0';
-                setTimeout(() => {
-                    overlay.style.visibility = 'hidden';
-                    content.style.opacity = '1';
-                    // Inicia as pétalas
-                    setInterval(createPetal, 500);
-                }, 800);
-            }, 800);
-        }
-
+                content.style.opacity = '1';
+            }, 50);
+            
+            setInterval(createPetal, 500);
+        }, 800);
+    }, 800);
+}
 
 const stackContainer = document.getElementById('photoStack');
 
-// 1. Configuração inicial
+// 1. Configuração inicial 
 function setupStack() {
     const photos = document.querySelectorAll('.photo');
     photos.forEach((photo, i) => {
         photo.style.zIndex = i + 1;
-        const rot = (Math.random() * 12) - 6;
-        photo.style.transform = `rotate(${rot}deg) translate(0,0)`;
+        const rot = (Math.random() * 10) - 5; 
+        // O translate(-50%, -50%) mantém a foto grudada no meio
+        photo.style.transform = `translate(-50%, -50%) rotate(${rot}deg)`;
     });
 }
 setupStack();
 
-// 2. Lógica do Clique com Volta vindo de Cima
+// 2. Lógica de Mergulho das Fotos (100% Centralizada)
 stackContainer.addEventListener('click', function(e) {
-    const clickedPhoto = e.target;
+    const clickedPhoto = e.target.closest('.photo');
     
-    // Verifica se clicou na foto que está no topo
-    if (clickedPhoto.classList.contains('photo') && clickedPhoto === stackContainer.lastElementChild) {
-        
+    if (clickedPhoto && clickedPhoto === stackContainer.lastElementChild) {
         clickedPhoto.style.pointerEvents = 'none';
 
-        // --- FASE 1: SAÍDA (Sobe rápido e some no topo) ---
-        clickedPhoto.style.transition = "all 0.8s cubic-bezier(0.4, 0, 0.2, 1)";
-        clickedPhoto.style.transform = `translateY(-120%) rotate(15deg) scale(0.6)`;
+        // FASE 1: Sobe mantendo o eixo X no meio (-50%)
+        clickedPhoto.style.transition = "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+        clickedPhoto.style.transform = `translate(-50%, -130%) rotate(0deg) scale(0.85)`;
         clickedPhoto.style.opacity = '0';
 
         setTimeout(() => {
-            // --- PREPARAÇÃO INVISÍVEL ---
-            // Move a foto para o início da lista (fundo da pilha) no HTML
+            // Joga pro fundo da lista
             stackContainer.prepend(clickedPhoto); 
             
-            // Reajusta Z-index de todas (1 é o fundo, maior é o topo)
             const allPhotos = document.querySelectorAll('.photo');
             allPhotos.forEach((p, index) => { p.style.zIndex = index + 1; });
 
-            // Posiciona a foto BEM ALTO fora da tela (preparando o mergulho)
+            // Posiciona lá em cima (invisível), mantendo o centro
             clickedPhoto.style.transition = "none"; 
-            clickedPhoto.style.transform = `translateY(-150vh) rotate(0deg) scale(1.1)`;
+            clickedPhoto.style.transform = `translate(-50%, -100vh) rotate(0deg) scale(1)`;
             
-            // Pequena pausa para o navegador processar a nova posição
             setTimeout(() => {
-                // --- FASE 2: VOLTA (Desce de cima para o fundo da pilha) ---
-                // Transição bem lenta e elegante (2 segundos)
-                clickedPhoto.style.transition = "all 2.0s cubic-bezier(0.19, 1, 0.22, 1)"; 
+                // FASE 2: Mergulha devolta pro centro exato
+                clickedPhoto.style.transition = "all 1.2s cubic-bezier(0.19, 1, 0.22, 1)"; 
                 clickedPhoto.style.opacity = '1';
                 
-                const finalRot = (Math.random() * 12) - 6;
-                // Volta para a posição original (0,0) encaixando por baixo
-                clickedPhoto.style.transform = `translateY(0) rotate(${finalRot}deg) scale(1)`;
+                const finalRot = (Math.random() * 10) - 5;
+                clickedPhoto.style.transform = `translate(-50%, -50%) rotate(${finalRot}deg) scale(1)`;
 
-                // Libera o clique após a animação de volta terminar
                 setTimeout(() => {
                     clickedPhoto.style.pointerEvents = 'auto';
-                }, 2000);
-            }, 100);
-
-        }, 900); // Tempo da subida inicial
+                }, 1200);
+            }, 50);
+        }, 650); 
     }
 });
 
-// --- 3. PÉTALAS ---
+// 3. Pétalas caindo
 function createPetal() {
     const container = document.getElementById('petals-container');
+    if(!container) return;
     const petal = document.createElement('div');
     petal.className = 'petal';
     const size = Math.random() * 12 + 10;
@@ -105,40 +101,31 @@ function createPetal() {
     setTimeout(() => petal.remove(), duration * 1000);
 }
 
-// --- Lógica da Assinatura com Efeito de Escrita ---
-
+// 4. Assinatura Automática
 const faturafinalText = "ass. o último romântico.";
-const speed = 100; // Velocidade da escrita (em milissegundos por letra)
-let i = 0;
-const signatureP = document.querySelector('#finalSignature p');
-const signatureContainer = document.getElementById('finalSignature');
+const speed = 100;
+let charIdx = 0;
 
-// Função que escreve o texto
 function typeWriter() {
-    if (i < faturafinalText.length) {
-        signatureP.innerHTML += faturafinalText.charAt(i);
-        i++;
+    const signatureP = document.querySelector('#finalSignature p');
+    if (charIdx < faturafinalText.length) {
+        signatureP.innerHTML += faturafinalText.charAt(charIdx);
+        charIdx++;
         setTimeout(typeWriter, speed);
     } else {
-        // Quando termina de escrever, esconde o cursor
-        signatureContainer.classList.add('escrita-concluida');
+        document.getElementById('finalSignature').classList.add('escrita-concluida');
     }
 }
 
-// --- Sensor para iniciar a escrita no momento certo ---
-const observerOptions = {
-    root: null,
-    threshold: 1.0 // Só começa quando 100% do elemento estiver visível
-};
-
+// O sensor dispara quando a assinatura chega em 50% da tela do celular
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-        if (entry.isIntersecting && i === 0) { // Só escreve uma vez
+        if (entry.isIntersecting && charIdx === 0) {
             typeWriter();
-            // Para de observar depois que começou a escrever
             observer.unobserve(entry.target);
         }
     });
-}, observerOptions);
+}, { threshold: 0.5 }); 
 
-observer.observe(signatureContainer);
+const target = document.getElementById('finalSignature');
+if(target) observer.observe(target);
