@@ -45,7 +45,7 @@ stackContainer.addEventListener('click', function(e) {
 
         // --- FASE 1: SAÍDA (Sobe rápido e some no topo) ---
         clickedPhoto.style.transition = "all 0.8s cubic-bezier(0.4, 0, 0.2, 1)";
-        clickedPhoto.style.transform = `translateY(-120vh) rotate(10deg) scale(0.6)`;
+        clickedPhoto.style.transform = `translateY(-120%) rotate(15deg) scale(0.6)`;
         clickedPhoto.style.opacity = '0';
 
         setTimeout(() => {

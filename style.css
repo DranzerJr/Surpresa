@@ -231,3 +231,50 @@ footer {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
 }
+
+/* --- AJUSTES PARA SMARTPHONES --- */
+@media (max-width: 768px) {
+    body {
+        padding: 10px; /* Margem interna para o texto não colar na borda */
+    }
+
+    header h1 {
+        font-size: 2.8rem; /* Título um pouco menor para não quebrar linha */
+        margin-top: 30px;
+    }
+
+    .texto-romantico {
+        padding: 0 20px; /* Mais espaço para o texto respirar */
+        max-width: 100%;
+    }
+
+    .texto-romantico p {
+        font-size: 1.25rem; /* Fonte ideal para leitura no celular */
+        line-height: 1.6;
+        text-align: center; /* No celular, o centralizado puro flui melhor */
+    }
+
+    /* --- AJUSTE DA PILHA DE FOTOS --- */
+    #photoStack {
+        width: 280px;  /* Tamanho menor para caber na tela do celular */
+        height: 350px; /* Mantém a proporção vertical */
+        margin: 40px auto; /* Centraliza a pilha */
+    }
+
+    .photo {
+        border-width: 8px; /* Bordas mais finas para sobrar espaço para a imagem */
+        border-bottom-width: 40px; /* Espaço para a "legenda" da polaroid */
+    }
+
+    .assinatura {
+        font-size: 2.8rem;
+        margin-top: 30px;
+    }
+
+    /* --- AJUSTE DA ASSINATURA FINAL --- */
+    .rodape-final p {
+        font-size: 2rem; /* Ajusta o tamanho da escrita final no mobile */
+        padding: 0 15px;
+        line-height: 1.2;
+    }
+}
